@@ -31,7 +31,7 @@ describe(NAME, function () {
         // make attack contract named "NameServiceAttacker" deployed by attacker wallet
         const NameServiceAttacker = await (
             await ethers.getContractFactory("NameServiceAttacker")
-        ).deploy(nameServiceBank.address);
+        ).connect(attacker).deploy(nameServiceBank.address);
 
         return {
             nameServiceBank,
@@ -60,6 +60,10 @@ describe(NAME, function () {
             // contract you are attacking.
             // We've already written the JS code above to deploy a
             // contract called "NameServiceAttacker" for you.
+
+            await NameServiceAttacker.connect(attacker).attack(ethers.utils.parseEther("1"));
+            await NameServiceAttacker.connect(attacker).withdraw();
+
         });
 
         after(async function () {
